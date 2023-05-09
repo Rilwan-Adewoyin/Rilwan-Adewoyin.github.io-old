@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Moto. Etc.
+subtitle: #<a href='#'>Affiliations</a>. Address. Contacts. Moto. Etc.
 
 profile:
   align: right
@@ -10,10 +10,9 @@ profile:
   image_circular: false # crops the image to make it circular
   address: >
     
-    <p>Department of Computer Science</p>
-    <p>University of Warwick</p>
-    <p>123 your address street</p>
-    <p>Your City, State 12345</p>
+    <p>Department of Computer Science @ University of Warwick</p>
+    <p>Quantitative Research @ Alan Turing Institute</p>
+  
 
 news: true  # includes a list of news items
 latest_posts: true  # includes a list of the newest posts

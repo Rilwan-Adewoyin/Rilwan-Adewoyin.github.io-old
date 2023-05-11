@@ -17,7 +17,7 @@ The Tweedie distribution is a statistical distribution that unifies various expo
 
 [This paper](https://www.kybernetika.cz/content/2011/1/15/paper.pdf) providers a more detailed yet still brief overview of this model.
 
-## Method: 
+## Method : 
 In this blog post, I will only discuss the bare minimum required for this approximation.
 
 The Compound Poisson-Gamma distribution is a discrete distribution, but you want to approximate it with a continuous distribution to make it differentiable and get gradients to train a neural network. One way to achieve this is by using Stirling's approximation. 
@@ -46,7 +46,7 @@ $$P(X = x) \approx \int_{0}^{\infty} \left(e^{-\lambda} * \frac{\lambda^\nu}{\sq
 
 Then we can calculate a Monte Carlo Sampling estimate with the exponential distribution or truncated normal distribution as our generative distribution.
 
-2) Method 2 hinges on finding which terms $$n_j\in \mathbb{N}$$ contribute significantly to the overall sum, and evaluating the Sum based on that.
+2) Method 2 hinges on finding which terms $$n_j\in \mathbb{N}$$ contribute significantly to the overall sum, and evaluating the Sum of those terms, while ignoring the others.
 
 With the following reparameterization,
 $$
@@ -65,12 +65,12 @@ $$
 While the probability of a rainfall event is expressed as:
 $$
 \begin{aligned}
-& P(L>0)=W(\lambda, \alpha, L, P) \exp \left[\frac{L}{(1-p) \mu^{p-1}}-\frac{\mu^{2-p}}{2-p}\right] \\
-& W(\lambda, \alpha, L, P)= \sum_{j=1}^{\infty} W_j =\sum_{j=1}^{\infty} \frac{\lambda^j(\alpha L)^{j p} e^{-\lambda}}{j ! \Gamma(j P)}
+P(L>0)=&W(\lambda, \alpha, L, P) \exp \left[\frac{L}{(1-p) \mu^{p-1}}-\frac{\mu^{2-p}}{2-p}\right] \\
+& \text{where } W(\lambda, \alpha, L, P)= \sum_{j=1}^{\infty} W_j =\sum_{j=1}^{\infty} \frac{\lambda^j(\alpha L)^{j p} e^{-\lambda}}{j ! \Gamma(j P)}
 \end{aligned}
 $$
 
-To approximate the function $$W(\lambda, \alpha, L, P)$$, follow the procedure in the appendix "Calculating $$j_max$$" to find the value of $$j$$ for which $$W_j$$ reaches its maximum. Treat $j$ as continuous, differentiate $$W_j$$ with respect to $$j$$, and set the derivative to zero. The log maximum approximation of $$W_j$$ is given by:
+To approximate the function $$W(\lambda, \alpha, L, P)$$, follow the procedure in the appendix "Calculating $$j_{max}$$" to find the value of $$j$$ for which $$W_j$$ reaches its maximum. Treat $$j$$ as continuous, differentiate $$W_j$$ with respect to $$j$$, and set the derivative to zero. The log maximum approximation of $$W_j$$ is given by:
 $$
 \begin{aligned}
 \log W_{\max }&=\frac{L^{2-p}}{(2-p) \Theta}\left[\log \frac{L^p(p-1)^p}{\Theta^{(1-P)}(2-p)}+(1+P)\right. \\
@@ -81,7 +81,7 @@ $$
 
 where $$j_{\max }=L^{2-p} /(2-p) \Theta$$.
 
-Therefore by taking a window around $$j_max$$ we can establish an estimate $$\widehat{W}$$ where the associated approximation error is bounded as follows:
+Therefore by taking a window around $$j_{max}$$ we can establish an estimate $$\widehat{W}$$ where the associated approximation error is bounded as follows:
 
 $$
 \begin{aligned}

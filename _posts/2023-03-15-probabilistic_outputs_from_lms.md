@@ -4,7 +4,6 @@ title:  Probalistic Answers to Open Ended Questions
 date:   2023-03-15 16:40:16
 description: Generating Probalistic Answers to From Language Models
 tags: nlp
-categories: stats
 ---
 
 This blog post is based on work I have previously done while at Alan Turing Institute.

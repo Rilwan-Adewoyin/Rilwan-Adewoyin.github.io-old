@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Papers on RL w\ Transformer
+title: RL x Transformer Research papers
 description: This page curates RL papers using Transformers, featuring filters for Task Domain, Transformer Role, RL Algorithm, and Exploration Strategy.
 
 # img: assets/img/12.jpg

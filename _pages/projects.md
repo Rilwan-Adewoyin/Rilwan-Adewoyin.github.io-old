@@ -2,10 +2,10 @@
 layout: page
 title: projects
 permalink: /projects/
-description: Projects .
+description: Projects across RL, NLP, Blockchain.
 nav: true
 nav_order: 2
-display_categories: [Research content, NLP, Blockchain]
+display_categories: [RL, NLP, Blockchain]
 horizontal: false
 ---
 

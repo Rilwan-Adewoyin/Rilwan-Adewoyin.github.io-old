@@ -78,13 +78,14 @@ let transTheme = () => {
 
 
 let initTheme = (theme) => {
-  if (theme == null || theme == 'null') {
+  // check theme is either 'dark' or 'light' or null
+  if (!['dark', 'light', null, "null"].includes(theme)) {
+    theme = 'light';
+  } else if (theme == null || theme == 'null') {
     const userPref = window.matchMedia;
     if (userPref && userPref('(prefers-color-scheme: dark)').matches) {
         theme = 'dark';
-    } else {
-      theme = 'light';
-  }
+    }
   } 
 
   setTheme(theme);

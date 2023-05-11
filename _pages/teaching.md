@@ -3,7 +3,7 @@ layout: page
 permalink: /teaching/
 title: teaching
 description: My teaching activity at the University of Warwick
-nav: true
+nav: false
 nav_order: 5
 ---
 

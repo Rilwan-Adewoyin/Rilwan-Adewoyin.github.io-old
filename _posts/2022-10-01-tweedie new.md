@@ -15,6 +15,8 @@ THE MOTIVATION: The Tweedie distribution is a 3 parameter distribution $$TW(\mu,
 
 The Tweedie distribution is a statistical distribution that unifies various exponential family distributions, including Poisson, gamma, and Gaussian. It is characterized by a positive power parameter, known as the Tweedie index. This versatile distribution is particularly useful in fields like insurance, finance, and ecology for modeling non-negative data with varying degrees of skewness and dispersion.
 
+[This paper](https://www.kybernetika.cz/content/2011/1/15/paper.pdf) providers a more detailed yet still brief overview of this model.
+
 ## Method: 
 In this blog post, I will only discuss the bare minimum required for this approximation.
 
@@ -68,28 +70,31 @@ $$
 \end{aligned}
 $$
 
-To approximate the function $W(\lambda, \alpha, L, P)$, follow the procedure to find the value of $j$ for which $W_j$ reaches its maximum. Treat $j$ as continuous, differentiate $W_j$ with respect to $j$, and set the derivative to zero. The log maximum approximation of $W_j$ is given by:
+To approximate the function $$W(\lambda, \alpha, L, P)$$, follow the procedure in the appendix "Calculating $$j_max$$" to find the value of $$j$$ for which $$W_j$$ reaches its maximum. Treat $j$ as continuous, differentiate $$W_j$$ with respect to $$j$$, and set the derivative to zero. The log maximum approximation of $$W_j$$ is given by:
 $$
 \begin{aligned}
-& \log W_{\max }=\frac{L^{2-p}}{(2-p) \Theta}\left[\log \frac{L^p(p-1)^p}{\Theta^{(1-P)}(2-p)}+(1+P)\right. \\
+\log W_{\max }&=\frac{L^{2-p}}{(2-p) \Theta}\left[\log \frac{L^p(p-1)^p}{\Theta^{(1-P)}(2-p)}+(1+P)\right. \\
 & \left.-P \log P-(1-P) \log \frac{L^{2-p}}{(2-p) \Theta}\right]-\log (2 \pi)-\frac{1}{2} \\
 & \cdot \log P-\log \frac{L^{2-p}}{(2-p) \Theta}
 \end{aligned}
 $$
+
 where $$j_{\max }=L^{2-p} /(2-p) \Theta$$.
 
-Therefore by taking a window around j_max we can establish an estimate $$\widehat{W}$$ where the associated approximation error is bounded as follows:
+Therefore by taking a window around $$j_max$$ we can establish an estimate $$\widehat{W}$$ where the associated approximation error is bounded as follows:
+
 $$
-W(L, \Theta, P)-\widehat{W}(L, \Theta, P) \\
-< W_{j_d-1} \frac{1-r_l^{j_d-1}}{1-r_l}+W_{j_u+1} \frac{1}{1-r_u} \\
+\begin{aligned}
+W(L, \Theta, P)-\widehat{W}(L, \Theta, P)
+&< W_{j_d-1} \frac{1-r_l^{j_d-1}}{1-r_l}+W_{j_u+1} \frac{1}{1-r_u} \\
 & r_l=\left.\exp \left(\frac{\partial W_j}{\partial j}\right)\right|_j=j_d-1, \\
 & r_u=\left.\exp \left(\frac{\partial W_j}{\partial j}\right)\right|_j=j_u+1 .
 \end{aligned}
 $$
 
-This is now an approximation of the Compound Poisson-Gamma likelihood, which can be used to compute gradients for training a neural network.
 
-[Further reading](https://www.kybernetika.cz/content/2011/1/15/paper.pdf) on this distribution.
+### Final Comments
+This is now an approximation of the Compound Poisson-Gamma likelihood, which can be used to compute gradients for training a neural network.
 
 Method 2 follows the work of [PK Dunn](https://research.usq.edu.au/download/8969f2b8cd529381e89bd7586e184439777aabdbaabe5c4ed7f7397dcb6bda50/226888/Dunn_Smyth_Stats_and_Comp_v15n4.pdf)
 
@@ -98,7 +103,7 @@ Method 2 follows the work of [PK Dunn](https://research.usq.edu.au/download/8969
 ### Calculating j_max
 To handle the sum to infinity when finding $$j_{\max}$$, the goal is to find the value of $$j$$ for which the terms in the sum are the most significant. For this purpose, the log maximum approximation of $$W_j$$ is considered. The steps to find $$j_{\max}$$ are as follows:
 
-1. Start with the expression for $W_j$ as a part of the sum:
+1. Start with the expression for $$W_j$$ as a part of the sum:
 $$
 W_j = \frac{\lambda^j(\alpha L)^{j p} e^{-\lambda}}{j ! \Gamma(j P)}
 $$
@@ -113,7 +118,8 @@ $$
 \log \Gamma(1+j) \approx (1+j) \log (1+j)-(1+j) + \frac{1}{2} \log \left(\frac{2 \pi}{1+j}\right)
 $$
 
-4. Now, differentiate the logarithmic expression of $$W_j$$ with respect to $$j$$ and ignore the $$1 / j$$ term for large $j$:
+4. Now, differentiate the logarithmic expression of $$W_j$$ with respect to $$j$$ and ignore the $$1 / j$$ term for large $$j$$:
+
 $$
 \frac{\partial \log W_j}{\partial j} \approx \log \lambda + p \log (\alpha L) - \log j - P \log (P j)
 $$

@@ -87,8 +87,8 @@ $$
 \begin{aligned}
 W(L, \Theta, P)-\widehat{W}(L, \Theta, P)
 &< W_{j_d-1} \frac{1-r_l^{j_d-1}}{1-r_l}+W_{j_u+1} \frac{1}{1-r_u} \\
-& r_l=\left.\exp \left(\frac{\partial W_j}{\partial j}\right)\right|_j=j_d-1, \\
-& r_u=\left.\exp \left(\frac{\partial W_j}{\partial j}\right)\right|_j=j_u+1 .
+& \text{where } r_l=\left.\exp \left(\frac{\partial W_j}{\partial j}\right)\right|_j=j_d-1, \\
+& \text{where } r_u=\left.\exp \left(\frac{\partial W_j}{\partial j}\right)\right|_j=j_u+1 .
 \end{aligned}
 $$
 
@@ -103,33 +103,32 @@ Method 2 follows the work of [PK Dunn](https://research.usq.edu.au/download/8969
 ### Calculating j_max
 To handle the sum to infinity when finding $$j_{\max}$$, the goal is to find the value of $$j$$ for which the terms in the sum are the most significant. For this purpose, the log maximum approximation of $$W_j$$ is considered. The steps to find $$j_{\max}$$ are as follows:
 
-1. Start with the expression for $$W_j$$ as a part of the sum:
+1. Start with the expression for $$W_j$$ as a part of the sum :
 $$
 W_j = \frac{\lambda^j(\alpha L)^{j p} e^{-\lambda}}{j ! \Gamma(j P)}
 $$
 
-2. Write down the logarithm of $$W_j$$:
+2. Write down the logarithm of $$W_j$$ :
 $$
 \log W_j = j \log \lambda + j p \log (\alpha L) - \lambda - \log (j !) - \log \Gamma(j P)
 $$
 
-3. Use Stirling's approximation for the Gamma function to simplify the logarithmic expression:
+3. Use Stirling's approximation for the Gamma function to simplify the logarithmic expression :
 $$
 \log \Gamma(1+j) \approx (1+j) \log (1+j)-(1+j) + \frac{1}{2} \log \left(\frac{2 \pi}{1+j}\right)
 $$
 
 4. Now, differentiate the logarithmic expression of $$W_j$$ with respect to $$j$$ and ignore the $$1 / j$$ term for large $$j$$:
-
 $$
 \frac{\partial \log W_j}{\partial j} \approx \log \lambda + p \log (\alpha L) - \log j - P \log (P j)
 $$
 
-5. Set the derivative to zero and solve for $$j$$:
+5. Set the derivative to zero and solve for $$j$$ :
 $$
 0 = \log \lambda + p \log (\alpha L) - \log j - P \log (P j)
 $$
 
-6. From the equation above, find $$j_{\max}$$:
+6. From the equation above, find $$j_{\max}$$ :
 $$
 j_{\max} = \frac{L^{2-p}}{(2-p) \Theta}
 $$

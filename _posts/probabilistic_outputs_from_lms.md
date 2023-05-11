@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  Trunet Poster
+title:  Probalistic Answers to Open Ended Questions
 date:   2015-03-15 16:40:16
-description: Stabilising training/gradients when using Tweedie Distributions
+description: Generating Probalistic Answers to From Language Models
 tags: nlp
-categories: stats
+categories: nlp
 ---
 
 ## Context

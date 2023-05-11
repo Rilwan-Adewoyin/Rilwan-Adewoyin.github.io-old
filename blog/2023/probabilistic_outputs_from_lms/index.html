@@ -10,10 +10,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Announcement_3 | Rilwan Akanni Adewoyin</title>
+    <title>Probalistic Answers to Open Ended Questions | Rilwan Akanni Adewoyin</title>
     <meta name="author" content="Rilwan Akanni Adewoyin">
-    <meta name="description" content="Rilwan Adewoyin, PhD student in Computer Science at University of Warwick
-">
+    <meta name="description" content="Generating Probalistic Answers to From Language Models">
 
 
     <!-- Bootstrap & MDB -->
@@ -38,7 +37,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%91%A8%E2%80%8D%F0%9F%92%BB&lt;/text&gt;&lt;/svg&gt;">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://rilwan-adewoyin.github.io//news/announcement_3/">
+    <link rel="canonical" href="https://rilwan-adewoyin.github.io//blog/2023/probabilistic_outputs_from_lms/">
 
     <!-- Dark Mode -->
     
@@ -77,8 +76,8 @@
               </li>
               
               <!-- Blog -->
-              <li class="nav-item ">
-                <a class="nav-link" href="/blog/">blog</a>
+              <li class="nav-item active">
+                <a class="nav-link" href="/blog/">blog<span class="sr-only">(current)</span></a>
               </li>
 
               <!-- Other pages -->
@@ -124,10 +123,18 @@
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">Announcement_3</h1>
-    <p class="post-meta">May 27, 2021</p>
+    <h1 class="post-title">Probalistic Answers to Open Ended Questions</h1>
+    <p class="post-meta">March 15, 2023</p>
     <p class="post-tags">
-      <a href="/blog/2021"> <i class="fas fa-calendar fa-sm"></i> 2021 </a>
+      <a href="/blog/2023"> <i class="fas fa-calendar fa-sm"></i> 2023 </a>
+        ·  
+        <a href="/blog/tag/nlp">
+          <i class="fas fa-hashtag fa-sm"></i> nlp</a>  
+          
+        ·  
+        <a href="/blog/category/stats">
+          <i class="fas fa-tag fa-sm"></i> stats</a>  
+          
 
     </p>
   </header>
@@ -135,7 +142,44 @@
   <article class="post-content">
     
     <div id="markdown-content">
-      <p>Released our <a href="https://arxiv.org/abs/2112.08217" rel="external nofollow noopener" target="_blank">preprint</a> introduces a novel approach to probabilistic forecasting with generative networks by minimizing prequential scores, improving uncertainty quantification and avoiding mode collapse issues.</p>
+      <p>This blog post is based on work I have previously done while at Alan Turing Institute.</p>
+
+<h2 id="context">Context</h2>
+
+<p>THE TASK: Given temporal causal graph and you want to determine the weights or existence of weights in a graph $G$, where the nodes and edges reflect a property in the real world such: 1) Nodes: Government Spending on specific budget items (bi) and socio-economic indicators (sei). Edges: reflect the degree to which a bi/sei affects a sei 2) Nodes: financial institutions and their credit profile Edges: some notion of dependency</p>
+
+<p>Therefore we are aiming to use prompt engineering in order to ascertain the weights of edges based on textual profiles of nodes.</p>
+
+<h2 id="quick-background-info">Quick Background Info</h2>
+
+<ul>
+  <li>
+    <p>Why not simply prompt the model or a yes no answer directly and look at the perplexity of those two responses?
+– As discussed (in this recent work)[] Some language models have been trained on datasets (PILE) which contain a significantly uneven distribution of yes/no answers.
+– As discussed in these (recent works)[], LMs tend to perform better when the question is open-ended as opposed to a yes/no question. Intuitively, this follows the findings that allowing an LM to explain its reasoning e.g. “chain of thought” improves the output</p>
+  </li>
+  <li>
+    <p>One important factor to consider is if you will model N^th order effects in your model?
+– When designing your prompt using terms such as “directly” or “indirectly” can lead to greatly different results
+– If you choose to only model 1st order effects, ensure to use “directly” in prompts</p>
+  </li>
+</ul>
+
+<h2 id="method-">Method :</h2>
+
+<ul>
+  <li>Design your open-ended prompt which can elicit an answer to the question</li>
+  <li>Create a secondary prompt which reduces the model’s answer to a positive or negative sentiment. E.g. “The previous answer, represents an [Agreement or Disagreement]?”</li>
+  <li>Evaluate the likelihood (perplexity) of either Agreement or Disagreement appearing in that final position. Ideally you want to choose two words which have the same number of tokens.</li>
+  <li>Use some function of the relative likelihood of either term (e.g. Agreement and Disagreement) to determine the weight of the edge</li>
+</ul>
+
+<h4 id="extending-to-2nd-order-effects">Extending to 2nd order effects</h4>
+<p>In order to differentiate between if a 1st or 2nd order effect occur between two nodes:
+– Directly ask the LLM if the relationship between two nodes can be considred direct or indirect.
+– Ask open-ended question explaining the relationship between two nodes, then ask follow up question to reduce previous answer to “direct effect” or “indirect effect”.
+– Use a similar method as above to get relative likelihoods for “direct effect” and “indirect effect”
+– Use some functions of the above likelihoods to determine weights for edges which reflect 1st order effects and 2nd order effects</p>
 
     </div>
   </article>
@@ -151,12 +195,6 @@
     <!-- Adds related posts to the end of an article -->
     <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2>
     <p class="mb-2">Here are some more articles you might like to read next:</p>
-  
-
-  <li class="my-2">
-    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/probabilistic_outputs_from_lms/">Probalistic Answers to Open Ended Questions</a>
-  </li>
-
   
 
   <li class="my-2">

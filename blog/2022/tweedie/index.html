@@ -10,10 +10,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Announcement_3 | Rilwan Akanni Adewoyin</title>
+    <title>Approximating Tweedie likelihood | Rilwan Akanni Adewoyin</title>
     <meta name="author" content="Rilwan Akanni Adewoyin">
-    <meta name="description" content="Rilwan Adewoyin, PhD student in Computer Science at University of Warwick
-">
+    <meta name="description" content="Differentiable approximation for Tweedie Distribution likelihood">
 
 
     <!-- Bootstrap & MDB -->
@@ -38,7 +37,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%91%A8%E2%80%8D%F0%9F%92%BB&lt;/text&gt;&lt;/svg&gt;">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://rilwan-adewoyin.github.io//news/announcement_3/">
+    <link rel="canonical" href="https://rilwan-adewoyin.github.io//blog/2022/tweedie/">
 
     <!-- Dark Mode -->
     
@@ -77,8 +76,8 @@
               </li>
               
               <!-- Blog -->
-              <li class="nav-item ">
-                <a class="nav-link" href="/blog/">blog</a>
+              <li class="nav-item active">
+                <a class="nav-link" href="/blog/">blog<span class="sr-only">(current)</span></a>
               </li>
 
               <!-- Other pages -->
@@ -124,10 +123,18 @@
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">Announcement_3</h1>
-    <p class="post-meta">May 27, 2021</p>
+    <h1 class="post-title">Approximating Tweedie likelihood</h1>
+    <p class="post-meta">October 1, 2022</p>
     <p class="post-tags">
-      <a href="/blog/2021"> <i class="fas fa-calendar fa-sm"></i> 2021 </a>
+      <a href="/blog/2022"> <i class="fas fa-calendar fa-sm"></i> 2022 </a>
+        ·  
+        <a href="/blog/tag/nlp">
+          <i class="fas fa-hashtag fa-sm"></i> nlp</a>  
+          
+        ·  
+        <a href="/blog/category/stats">
+          <i class="fas fa-tag fa-sm"></i> stats</a>  
+          
 
     </p>
   </header>
@@ -135,7 +142,124 @@
   <article class="post-content">
     
     <div id="markdown-content">
-      <p>Released our <a href="https://arxiv.org/abs/2112.08217" rel="external nofollow noopener" target="_blank">preprint</a> introduces a novel approach to probabilistic forecasting with generative networks by minimizing prequential scores, improving uncertainty quantification and avoiding mode collapse issues.</p>
+      <h2 id="context">Context</h2>
+<p>THE TASK: In a previous research work, I proposed a neural network structure which outputs a 3 parameters defining a predictive tweedie distribution. An important sub-task was producing a stable loss/gradient calculation for training a neural network despite the non-continuity and intractibility of the likelihood for tweedie distributions</p>
+
+<p>THE MOTIVATION: Compound poisson-gamma distribution is a member of the family of 3 parameter tweedie distributions $TW(\mu, \sigma, \rho )$. The \rho parameter can be varied between a value of 1 and 2, which allows the distribution to be a good fit to a larger range of empirically observed observations.
+Furthermore, Compound Poisson-Gamma distribution can be interpreted as the aggregated sum of N independent samples from a Gamma distribution, where N is sampled from a Poisson distribution. In the context of rain we can consider 1 day to have be N rain events of which each event was gamma distributed. 
+Zero rain can be ccaptured when N=0 and the distribution for each rain event can range across distributional shapes resembling exponential, guassian and beta.</p>
+
+<p>\insert picture of shapes compound-gamma can take</p>
+
+<h2 id="quick-background-info">Quick Background Info</h2>
+
+<p>The Tweedie distribution is a statistical distribution that unifies various exponential family distributions, including Poisson, gamma, and Gaussian. It is characterized by a positive power parameter, known as the Tweedie index. This versatile distribution is particularly useful in fields like insurance, finance, and ecology for modeling non-negative data with varying degrees of skewness and dispersion.</p>
+
+<h2 id="method-improving-upon-continuous-approximations">Method: Improving upon continuous approximations</h2>
+<p>In this blog post, I will only discuss the bare minimum required for this approximation.</p>
+
+<p>The Compound Poisson-Gamma distribution is a discrete distribution, but you want to approximate it with a continuous distribution to make it differentiable and get gradients to train a neural network. One way to achieve this is by using Stirling’s approximation.</p>
+
+<p>Stirling’s approximation is a technique used to approximate the factorial function for large values of n. It is given by:</p>
+
+<p>n! ≈ sqrt(2πn) * (n / e)^n</p>
+
+<p>To produce a continuous approximation of the Compound Poisson-Gamma distribution, we first need to know its probability mass function (PMF). The Compound Poisson-Gamma distribution is defined as follows:</p>
+
+<p>Let X be the sum of N independent and identically distributed (i.i.d.) gamma random variables with shape parameter k and rate parameter θ, where N follows a Poisson distribution with parameter λ. The random variable X is said to follow a Compound Poisson-Gamma distribution with parameters k, θ, and λ.</p>
+
+<p>The PMF of the Compound Poisson-Gamma distribution can be expressed as:</p>
+
+<p>P(X = x) = sum_{n=0}^∞ (e^(-λ) * (λ^n) / n!) * (1/Gamma(nk + 1)) * (θ^(nk)) * ((x/θ)^nk) * e^(-x/θ)</p>
+
+<p>Now, let’s use Stirling’s approximation to make it continuous. We will approximate n! with Stirling’s formula in the Poisson part:</p>
+
+<p>P(X = x) ≈ sum_{n=0}^∞ (e^(-λ) * (λ^n) / (sqrt(2πn) * (n / e)^n)) * (1/Gamma(nk + 1)) * (θ^(nk)) * ((x/θ)^nk) * e^(-x/θ)</p>
+
+<p>However, this is still a discrete distribution because of the summation over n. To create a continuous approximation, you can use either of the two methods:</p>
+
+<p>1) Replace the summation with an integral. replacing n with its continous counterpart, ν:</p>
+
+<p>P(X = x) ≈ integral(ν=0 to ∞) (e^(-λ) * (λ^ν) / (sqrt(2πν) * (ν / e)^ν)) * (1/Gamma(νk + 1)) * (θ^(νk)) * ((x/θ)^(νk)) * e^(-x/θ) dν</p>
+
+<p>Then we can calculate a Monte Carlo Sampling estimate with the exponential distribution or truncated normal distribution as our generative distribution.</p>
+
+<p>2) Method 2 hinges on finding which terms $n_j\in \mathbb{N}$ contribute significantly to the overall sum, and evaluating the Sum based on that.</p>
+
+<p>With the following reparameterization,
+\(\begin{aligned}
+&amp; \lambda=\frac{\mu^{2-p}}{\Theta(2-p)}, \\
+&amp; \alpha=\Theta(p-1) \mu^{p-1}, \\
+&amp; P=\frac{2-p}{p-1} .
+\end{aligned}\)</p>
+
+<p>we can express the probability of no rainfall is expressed as:
+\(P(L=0)=\exp \left[-\frac{\mu^{2-p}}{\Theta(2-p)}\right]\)</p>
+
+<p>While the probability of a rainfall event is expressed as:
+\(\begin{aligned}
+&amp; P(L&gt;0)=W(\lambda, \alpha, L, P) \exp \left[\frac{L}{(1-p) \mu^{p-1}}-\frac{\mu^{2-p}}{2-p}\right] \\
+&amp; W(\lambda, \alpha, L, P)= \sum_{j=1}{\infty} W_j =\sum_{j=1}^{\infty} \frac{\lambda^j(\alpha L)^{j p} e^{-\lambda}}{j ! \Gamma(j P)}\)</p>
+
+<p>To approximate the function $W(\lambda, \alpha, L, P)$, follow the procedure to find the value of $j$ for which $W_j$ reaches its maximum. Treat $j$ as continuous, differentiate $W_j$ with respect to $j$, and set the derivative to zero. The log maximum approximation of $W_j$ is given by:
+$$</p>
+
+<p>\begin{aligned}
+&amp; \log W_{\max }=\frac{L^{2-p}}{(2-p) \Theta}\left[\log \frac{L^p(p-1)^p}{\Theta^{(1-P)}(2-p)}+(1+P)\right. <br>
+&amp; \left.-P \log P-(1-P) \log \frac{L^{2-p}}{(2-p) \Theta}\right]-\log (2 \pi)-\frac{1}{2} <br>
+&amp; \cdot \log P-\log \frac{L^{2-p}}{(2-p) \Theta}
+\end{aligned}
+$$
+where $j_{\max }=L^{2-p} /(2-p) \Theta$.</p>
+
+<p>Therefore by taking a window around j_max we can establish an estimate $\widehat{W}$ where the associated approximation error is bounded as follows:
+\(W(L, \Theta, P)-\widehat{W}(L, \Theta, P) \\
+&lt; W_{j_d-1} \frac{1-r_l^{j_d-1}}{1-r_l}+W_{j_u+1} \frac{1}{1-r_u} \\
+&amp; r_l=\left.\exp \left(\frac{\partial W_j}{\partial j}\right)\right|_j=j_d-1, \\
+&amp; r_u=\left.\exp \left(\frac{\partial W_j}{\partial j}\right)\right|_j=j_u+1 .
+\end{aligned}\)
+$$</p>
+
+<p>This is now an approximation of the Compound Poisson-Gamma likelihood, which can be used to compute gradients for training a neural network.</p>
+
+<p><a href="https://www.kybernetika.cz/content/2011/1/15/paper.pdf" rel="external nofollow noopener" target="_blank">Further reading</a> on this distribution.</p>
+
+<p>Method2 follows the work of <a href="https://research.usq.edu.au/download/8969f2b8cd529381e89bd7586e184439777aabdbaabe5c4ed7f7397dcb6bda50/226888/Dunn_Smyth_Stats_and_Comp_v15n4.pdf" rel="external nofollow noopener" target="_blank">PK Dunn</a></p>
+
+<h2 id="appendix">Appendix</h2>
+
+<h3 id="calculating-j_max">Calculating j_max</h3>
+<p>To handle the sum to infinity when finding $j_{\max}$, the goal is to find the value of $j$ for which the terms in the sum are the most significant. For this purpose, the log maximum approximation of $W_j$ is considered. The steps to find $j_{\max}$ are as follows:</p>
+
+<ol>
+  <li>
+    <p>Start with the expression for $W_j$ as a part of the sum:
+\(W_j = \frac{\lambda^j(\alpha L)^{j p} e^{-\lambda}}{j ! \Gamma(j P)}\)</p>
+  </li>
+  <li>
+    <p>Write down the logarithm of $W_j$:
+\(\log W_j = j \log \lambda + j p \log (\alpha L) - \lambda - \log (j !) - \log \Gamma(j P)\)</p>
+  </li>
+  <li>
+    <p>Use Stirling’s approximation for the Gamma function to simplify the logarithmic expression:
+\(\log \Gamma(1+j) \approx (1+j) \log (1+j)-(1+j) + \frac{1}{2} \log \left(\frac{2 \pi}{1+j}\right)\)</p>
+  </li>
+  <li>
+    <p>Now, differentiate the logarithmic expression of $W_j$ with respect to $j$ and ignore the $1 / j$ term for large $j$:
+\(\frac{\partial \log W_j}{\partial j} \approx \log \lambda + p \log (\alpha L) - \log j - P \log (P j)\)</p>
+  </li>
+  <li>
+    <p>Set the derivative to zero and solve for $j$:
+\(0 = \log \lambda + p \log (\alpha L) - \log j - P \log (P j)\)</p>
+  </li>
+  <li>
+    <p>From the equation above, find $j_{\max}$:
+\(j_{\max} = \frac{L^{2-p}}{(2-p) \Theta}\)</p>
+  </li>
+</ol>
+
+<p>By finding the value of $j$ for which $W_j$ reaches its maximum, the sum to infinity is handled by focusing on the most significant terms. This approach allows for a more efficient and accurate approximation of the function $W(\lambda, \alpha, L, P)$, as the terms in the sum decay faster than geometrically on either side of $j_{\max}$.</p>
+
 
     </div>
   </article>
@@ -155,12 +279,6 @@
 
   <li class="my-2">
     <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2023/probabilistic_outputs_from_lms/">Probalistic Answers to Open Ended Questions</a>
-  </li>
-
-  
-
-  <li class="my-2">
-    <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/blog/2022/tweedie/">Approximating Tweedie likelihood</a>
   </li>
 
 </div>

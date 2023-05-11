@@ -11,8 +11,7 @@ let toggleTheme = (theme) => {
 
 let setTheme = (theme) =>  {
   transTheme();
-  setHighlight(theme);
-  setGiscusTheme(theme);
+
 
   if (theme) {
     document.documentElement.setAttribute("data-theme", theme);
@@ -38,6 +37,10 @@ let setTheme = (theme) =>  {
           .getPropertyValue('--global-bg-color') + 'ee',  // + 'ee' for trasparency.
     })
   }
+
+  setHighlight(theme);
+  setGiscusTheme(theme);
+  
 };
 
 

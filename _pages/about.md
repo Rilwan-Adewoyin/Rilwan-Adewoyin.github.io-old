@@ -28,5 +28,7 @@ Link to your social media connections, too. This theme is set up to use [Font Aw
 
 I am a passionate researcher focused on natural language processing, probabilistic neural networks, and reinforcement learning. Currently, I'm pursuing my PhD in Computer Science at the University of Warwick, where I work on controllable natural language generators, probabilistic neural methods for sequential data exhibiting skewed distributive patterns, and transformer-based reinforcement learning.
 
-Before starting my PhD, I obtained an MSc in Statistics from the University of Warwick and a BSc in Mathematics from the London School of Economics. My experiences in quantitative research began with an internship at a Cambridge based machine learning research lab for [Informetis](https://www.informetis.com/en/), where I developed a custom Transformer architecture for disaggregating high-frequency household power signals into individual appliance power signals.
-During my PhD, I interned as an Associate Quantitative Researcher at J.P. Morgan and I am currently working part-time as a Quantitative Research Assistant at the Alan Turing Institute.
+Before starting my PhD, I obtained an MSc in Statistics from the University of Warwick and a BSc in Mathematics from the London School of Economics.
+
+
+My experiences in quantitative research began with an internship at a Cambridge based machine learning research lab for [Informetis](https://www.informetis.com/en/), where I developed a custom Transformer architecture for disaggregating high-frequency household power signals into individual appliance power signals. During my PhD, I spent 6 months in industry as an Associate Quantitative Researcher at J.P. Morgan and for the current 6 month window, until July 2023, I am currently a Quantitative Research Assistant at the Alan Turing Institute.

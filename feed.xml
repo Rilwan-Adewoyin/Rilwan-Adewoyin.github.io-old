@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://rilwan-adewoyin.github.io//feed.xml" rel="self" type="application/atom+xml" /><link href="https://rilwan-adewoyin.github.io//" rel="alternate" type="text/html" hreflang="en" /><updated>2023-05-11T22:49:53+00:00</updated><id>https://rilwan-adewoyin.github.io//feed.xml</id><title type="html">blank</title><subtitle>Rilwan Adewoyin, PhD student in Computer Science at University of Warwick
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://rilwan-adewoyin.github.io//feed.xml" rel="self" type="application/atom+xml" /><link href="https://rilwan-adewoyin.github.io//" rel="alternate" type="text/html" hreflang="en" /><updated>2023-05-11T23:23:33+00:00</updated><id>https://rilwan-adewoyin.github.io//feed.xml</id><title type="html">blank</title><subtitle>Rilwan Adewoyin, PhD student in Computer Science at University of Warwick
 </subtitle><entry><title type="html">Probabilistic Answers to Open Ended Questions</title><link href="https://rilwan-adewoyin.github.io//blog/2023/probabilistic_outputs_from_lms/" rel="alternate" type="text/html" title="Probabilistic Answers to Open Ended Questions" /><published>2023-03-15T16:40:16+00:00</published><updated>2023-03-15T16:40:16+00:00</updated><id>https://rilwan-adewoyin.github.io//blog/2023/probabilistic_outputs_from_lms</id><content type="html" xml:base="https://rilwan-adewoyin.github.io//blog/2023/probabilistic_outputs_from_lms/"><![CDATA[<p>This blog post is based on work I have previously done while at the Alan Turing Institute.</p>
 
 <h2 id="context-">Context :</h2>
@@ -36,7 +36,116 @@
 – Directly ask the LLM if the relationship between two nodes can be considered direct or indirect.
 – Ask an open-ended question explaining the relationship between two nodes, then ask a follow-up question to reduce the previous answer to “direct effect” or “indirect effect.”
 – Use a similar method as above to get relative likelihoods for “direct effect” and “indirect effect.”
-– Use some functions of the above likelihoods to determine weights for edges which reflect 1st order effects and 2nd order effects.</p>]]></content><author><name></name></author><category term="nlp" /><summary type="html"><![CDATA[Generating Probabilistic Answers from Language Models]]></summary></entry><entry><title type="html">Approximating Tweedie likelihood</title><link href="https://rilwan-adewoyin.github.io//blog/2022/tweedie/" rel="alternate" type="text/html" title="Approximating Tweedie likelihood" /><published>2022-10-01T16:40:16+00:00</published><updated>2022-10-01T16:40:16+00:00</updated><id>https://rilwan-adewoyin.github.io//blog/2022/tweedie</id><content type="html" xml:base="https://rilwan-adewoyin.github.io//blog/2022/tweedie/"><![CDATA[<h2 id="context-">Context :</h2>
+– Use some functions of the above likelihoods to determine weights for edges which reflect 1st order effects and 2nd order effects.</p>]]></content><author><name></name></author><category term="nlp" /><summary type="html"><![CDATA[Generating Probabilistic Answers from Language Models]]></summary></entry><entry><title type="html">Approximating Tweedie likelihood</title><link href="https://rilwan-adewoyin.github.io//blog/2022/tweedie-new/" rel="alternate" type="text/html" title="Approximating Tweedie likelihood" /><published>2022-10-01T16:40:16+00:00</published><updated>2022-10-01T16:40:16+00:00</updated><id>https://rilwan-adewoyin.github.io//blog/2022/tweedie%20new</id><content type="html" xml:base="https://rilwan-adewoyin.github.io//blog/2022/tweedie-new/"><![CDATA[<h2 id="context-">Context :</h2>
+<p>THE TASK: In a previous research work, I proposed a neural network structure which outputs 3 parameters defining a predictive Tweedie distribution. An important sub-task was producing a stable loss/gradient calculation for training a neural network despite the non-continuity and intractability of the likelihood for Tweedie distributions.</p>
+
+<p>THE MOTIVATION: The Tweedie distribution is a 3 parameter distribution \(TW(\mu, \sigma, \rho )\). When the \(\rho\) parameter takes values between 1 and 2, we observe the Compound Poisson-Gamma distribution. As \(\rho\) varies, the shape of the distribution varies, which allows the distribution to be a good fit for a larger range of empirically observed observations. Furthermore, Compound Poisson-Gamma distribution can be interpreted as the aggregated sum of N independent samples from a Gamma distribution, where N is sampled from a Poisson distribution. In the context of rain, we can consider 1 day to have N rain events, each event being gamma distributed. Zero rain can be captured when N=0, and the distribution for each rain event can range across distributional shapes resembling exponential, Gaussian, and beta.</p>
+
+<h2 id="quick-background-info-">Quick Background Info :</h2>
+
+<p>The Tweedie distribution is a statistical distribution that unifies various exponential family distributions, including Poisson, gamma, and Gaussian. It is characterized by a positive power parameter, known as the Tweedie index. This versatile distribution is particularly useful in fields like insurance, finance, and ecology for modeling non-negative data with varying degrees of skewness and dispersion.</p>
+
+<h2 id="method">Method:</h2>
+<p>In this blog post, I will only discuss the bare minimum required for this approximation.</p>
+
+<p>The Compound Poisson-Gamma distribution is a discrete distribution, but you want to approximate it with a continuous distribution to make it differentiable and get gradients to train a neural network. One way to achieve this is by using Stirling’s approximation.</p>
+
+<p>Stirling’s approximation is a technique used to approximate the factorial function for large values of n. It is given by:</p>
+
+\[n! \approx \sqrt{2\pi n} * \left(\frac{n}{e}\right)^n\]
+
+<p>To produce a continuous approximation of the Compound Poisson-Gamma distribution, we first need to know its probability mass function (PMF). The Compound Poisson-Gamma distribution is defined as follows:</p>
+
+<p>Let X be the sum of N independent and identically distributed (i.i.d.) gamma random variables with shape parameter k and rate parameter θ, where N follows a Poisson distribution with parameter λ. The random variable X is said to follow a Compound Poisson-Gamma distribution with parameters k, θ, and λ.</p>
+
+<p>The PMF of the Compound Poisson-Gamma distribution can be expressed as:</p>
+
+\[P(X = x) = \sum_{n=0}^{\infty} \left(e^{-\lambda} * \frac{\lambda^n}{n!}\right) * \frac{1}{\Gamma(nk + 1)} * \left(\theta^{nk}\right) * \left(\frac{x}{\theta}\right)^{nk} * e^{-x/\theta}\]
+
+<p>Now, let’s use Stirling’s approximation to make it continuous. We will approximate n! with Stirling’s formula in the Poisson part:</p>
+
+\[P(X = x) \approx \sum_{n=0}^{\infty} \left(e^{-\lambda} * \frac{\lambda^n}{\sqrt{2\pi n} * \left(\frac{n}{e}\right)^n}\right) * \frac{1}{\Gamma(nk + 1)} * \left(\theta^{nk}\right) * \left(\frac{x}{\theta}\right)^{nk} * e^{-x/\theta}\]
+
+<p>However, this is still a discrete distribution because of the summation over n. To create a continuous approximation, you can use either of the two methods:</p>
+
+<p>1) Replace the summation with an integral, replacing n with its continuous counterpart, ν:</p>
+
+\[P(X = x) \approx \int_{0}^{\infty} \left(e^{-\lambda} * \frac{\lambda^\nu}{\sqrt{2\pi \nu} * \left(\frac{\nu}{e}\right)^\nu}\right) * \frac{1}{\Gamma(\nu k + 1)} * \left(\theta^{\nu k}\right) * \left(\frac{x}{\theta}\right)^{\nu k} * e^{-x/\theta} d\nu\]
+
+<p>Then we can calculate a Monte Carlo Sampling estimate with the exponential distribution or truncated normal distribution as our generative distribution.</p>
+
+<p>2) Method 2 hinges on finding which terms \(n_j\in \mathbb{N}\) contribute significantly to the overall sum, and evaluating the Sum based on that.</p>
+
+<p>With the following reparameterization,
+\(\begin{aligned}
+&amp; \lambda=\frac{\mu^{2-p}}{\Theta(2-p)}, \\
+&amp; \alpha=\Theta(p-1) \mu^{p-1}, \\
+&amp; P=\frac{2-p}{p-1} .
+\end{aligned}\)</p>
+
+<p>we can express the probability of no rainfall as:
+\(P(L=0)=\exp \left[-\frac{\mu^{2-p}}{\Theta(2-p)}\right]\)</p>
+
+<p>While the probability of a rainfall event is expressed as:
+\(\begin{aligned}
+&amp; P(L&gt;0)=W(\lambda, \alpha, L, P) \exp \left[\frac{L}{(1-p) \mu^{p-1}}-\frac{\mu^{2-p}}{2-p}\right] \\
+&amp; W(\lambda, \alpha, L, P)= \sum_{j=1}^{\infty} W_j =\sum_{j=1}^{\infty} \frac{\lambda^j(\alpha L)^{j p} e^{-\lambda}}{j ! \Gamma(j P)}
+\end{aligned}\)</p>
+
+<p>To approximate the function $W(\lambda, \alpha, L, P)$, follow the procedure to find the value of $j$ for which $W_j$ reaches its maximum. Treat $j$ as continuous, differentiate $W_j$ with respect to $j$, and set the derivative to zero. The log maximum approximation of $W_j$ is given by:
+\(\begin{aligned}
+&amp; \log W_{\max }=\frac{L^{2-p}}{(2-p) \Theta}\left[\log \frac{L^p(p-1)^p}{\Theta^{(1-P)}(2-p)}+(1+P)\right. \\
+&amp; \left.-P \log P-(1-P) \log \frac{L^{2-p}}{(2-p) \Theta}\right]-\log (2 \pi)-\frac{1}{2} \\
+&amp; \cdot \log P-\log \frac{L^{2-p}}{(2-p) \Theta}
+\end{aligned}\)
+where \(j_{\max }=L^{2-p} /(2-p) \Theta\).</p>
+
+<p>Therefore by taking a window around j_max we can establish an estimate \(\widehat{W}\) where the associated approximation error is bounded as follows:
+\(W(L, \Theta, P)-\widehat{W}(L, \Theta, P) \\
+&lt; W_{j_d-1} \frac{1-r_l^{j_d-1}}{1-r_l}+W_{j_u+1} \frac{1}{1-r_u} \\
+&amp; r_l=\left.\exp \left(\frac{\partial W_j}{\partial j}\right)\right|_j=j_d-1, \\
+&amp; r_u=\left.\exp \left(\frac{\partial W_j}{\partial j}\right)\right|_j=j_u+1 .
+\end{aligned}\)</p>
+
+<p>This is now an approximation of the Compound Poisson-Gamma likelihood, which can be used to compute gradients for training a neural network.</p>
+
+<p><a href="https://www.kybernetika.cz/content/2011/1/15/paper.pdf">Further reading</a> on this distribution.</p>
+
+<p>Method 2 follows the work of <a href="https://research.usq.edu.au/download/8969f2b8cd529381e89bd7586e184439777aabdbaabe5c4ed7f7397dcb6bda50/226888/Dunn_Smyth_Stats_and_Comp_v15n4.pdf">PK Dunn</a></p>
+
+<h2 id="appendix">Appendix</h2>
+
+<h3 id="calculating-j_max">Calculating j_max</h3>
+<p>To handle the sum to infinity when finding $j_{\max}$, the goal is to find the value of $j$ for which the terms in the sum are the most significant. For this purpose, the log maximum approximation of $W_j$ is considered. The steps to find $j_{\max}$ are as follows:</p>
+
+<ol>
+  <li>
+    <p>Start with the expression for $W_j$ as a part of the sum:
+\(W_j = \frac{\lambda^j(\alpha L)^{j p} e^{-\lambda}}{j ! \Gamma(j P)}\)</p>
+  </li>
+  <li>
+    <p>Write down the logarithm of $W_j$:
+\(\log W_j = j \log \lambda + j p \log (\alpha L) - \lambda - \log (j !) - \log \Gamma(j P)\)</p>
+  </li>
+  <li>
+    <p>Use Stirling’s approximation for the Gamma function to simplify the logarithmic expression:
+\(\log \Gamma(1+j) \approx (1+j) \log (1+j)-(1+j) + \frac{1}{2} \log \left(\frac{2 \pi}{1+j}\right)\)</p>
+  </li>
+  <li>
+    <p>Now, differentiate the logarithmic expression of $W_j$ with respect to $j$ and ignore the $1 / j$ term for large $j$:
+\(\frac{\partial \log W_j}{\partial j} \approx \log \lambda + p \log (\alpha L) - \log j - P \log (P j)\)</p>
+  </li>
+  <li>
+    <p>Set the derivative to zero and solve for $j$:
+\(0 = \log \lambda + p \log (\alpha L) - \log j - P \log (P j)\)</p>
+  </li>
+  <li>
+    <p>From the equation above, find $j_{\max}$:
+\(j_{\max} = \frac{L^{2-p}}{(2-p) \Theta}\)</p>
+  </li>
+</ol>
+
+<p>By finding the value of \(j\) for which \(W_j\) reaches its maximum, the sum to infinity is handled by focusing on the most significant terms. This approach allows for a more efficient and accurate approximation of the</p>]]></content><author><name></name></author><category term="nlp" /><summary type="html"><![CDATA[Differentiable approximation for Tweedie Distribution likelihood]]></summary></entry><entry><title type="html">Approximating Tweedie likelihood</title><link href="https://rilwan-adewoyin.github.io//blog/2022/tweedie/" rel="alternate" type="text/html" title="Approximating Tweedie likelihood" /><published>2022-10-01T16:40:16+00:00</published><updated>2022-10-01T16:40:16+00:00</updated><id>https://rilwan-adewoyin.github.io//blog/2022/tweedie</id><content type="html" xml:base="https://rilwan-adewoyin.github.io//blog/2022/tweedie/"><![CDATA[<h2 id="context-">Context :</h2>
 <p>THE TASK: In a previous research work, I proposed a neural network structure which outputs a 3 parameters defining a predictive tweedie distribution. An important sub-task was producing a stable loss/gradient calculation for training a neural network despite the non-continuity and intractibility of the likelihood for tweedie distributions.</p>
 
 <p>THE MOTIVATION: The Tweedie distribution is a 3 parameter distribution \(TW(\mu, \sigma, \rho )\). When the \(\rho\) parameter takes values between 1 and 2, we observe the Compound poisson-gamma distribution. As \(\rho\) varies, the shape of the distribution varies which allows the distribution to be a good fit to a larger range of empirically observed observations.

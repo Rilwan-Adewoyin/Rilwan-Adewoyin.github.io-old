@@ -26,7 +26,7 @@ Put your address / P.O. box / other info right below your picture. You can also 
 Link to your social media connections, too. This theme is set up to use [Font Awesome icons](http://fortawesome.github.io/Font-Awesome/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them. -->
 
 
-I am a passionate researcher focused on natural language processing, probabilistic neural networks, and reinforcement learning. Currently, I'm pursuing my PhD in Computer Science at the University of Warwick, where I work on controllable natural language generators, probabilistic neural methods for sequential data exhibiting skewed distributive patterns, and transformer-based reinforcement learning.
+I am a passionate researcher focused on natural language processing, probabilistic neural networks, and reinforcement learning. Currently, I'm pursuing my PhD in Computer Science at the University of Warwick, where I work on controllable natural language generators, probabilistic neural networks for sequential data exhibiting skewed distributive patterns, and transformer-based reinforcement learning.  My main supervisors are Prof. [Yulan He](https://www.turing.ac.uk/people/researchers/yulan-he) (Uni. Warwick). and [Prof. Ritabrata Dutta](https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/dutta/) (Uni. Warwick).
 
 Before starting my PhD, I obtained an MSc in Statistics from the University of Warwick and a BSc in Mathematics from the London School of Economics.
 

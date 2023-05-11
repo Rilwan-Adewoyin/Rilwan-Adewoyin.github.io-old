@@ -40,7 +40,7 @@ let setTheme = (theme) =>  {
 
   setHighlight(theme);
   setGiscusTheme(theme);
-  
+
 };
 
 
@@ -89,8 +89,11 @@ let initTheme = (theme) => {
     if (userPref && userPref('(prefers-color-scheme: dark)').matches) {
         theme = 'dark';
     }
-  } 
+  }
 
+  if (theme == 'dark') {
+    setTheme("white");
+  }
   setTheme(theme);
 }
 

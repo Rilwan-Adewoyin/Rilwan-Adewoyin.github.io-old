@@ -7,7 +7,6 @@ nav: true
 nav_order: 5
 ---
 
-# 
 ### Academic year 21/22
 
 - Teaching Assistant for "Algorithmic Graph Theory" at the Department of Computer Science, Warwick

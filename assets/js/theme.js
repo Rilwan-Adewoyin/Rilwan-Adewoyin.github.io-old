@@ -82,8 +82,10 @@ let initTheme = (theme) => {
     const userPref = window.matchMedia;
     if (userPref && userPref('(prefers-color-scheme: dark)').matches) {
         theme = 'dark';
-    }
+    } else {
+      theme = 'light';
   }
+  } 
 
   setTheme(theme);
 }

@@ -6,7 +6,7 @@ title: blank # the website title (if blank, full name will be used instead)
 first_name: Rilwan
 middle_name: Akanni
 last_name: Adewoyin
-email: rilwan.ade1@gmail.com
+email: rilakanni.ade@gmail.com
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   Rilwan Adewoyin, PhD student in Computer Science at University of Warwick
 footer_text:  
@@ -14,7 +14,7 @@ keywords: # add your own keywords or leave empty
 
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: 👨‍💻 # the emoji used as the favicon
-url: https://Rilwan-Adewoyin.github.io
+url: https://rilwan-adewoyin.github.io/
 baseurl: # the subpath of your site, e.g. /blog/
 last_updated: true # set to true if you want to display last updated in the footer
 impressum_path:  # set to path to include impressum link in the footer, use the same path as permalink in a page, helps to conform with EU GDPR
@@ -51,7 +51,7 @@ navbar_fixed: true
 footer_fixed: true
 
 # Dimensions
-max_width: 800px
+max_width: 1000px
 
 # TODO: add layout settings (single page vs. multi-page)
 
